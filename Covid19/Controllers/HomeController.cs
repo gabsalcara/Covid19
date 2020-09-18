@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.UI.WebControls.Expressions;
+using Covid19.Models.API;
+using static Covid19.Models.API.CovidModel;
 
 namespace Covid19.Controllers
 {
@@ -48,20 +50,18 @@ namespace Covid19.Controllers
                 streamDados.Close();
                 resposta.Close();
 
-                return Json(new { Search = search, Hits = hits }, JsonRequestBehavior.AllowGet);
+                var data = new
+                {
+                    search.Took,
+                    search.TimeOut,
+                    hits.MaxScore,
+                    hits.Relation,
+                    Total.Total,
+                };
+
+                return Json(data, JsonRequestBehavior.AllowGet);
             }
         }
 
-        public class Search
-        {
-            public int Took { get; set; }
-            public string TimeOut { get; set; }
-        }
-        public class Hits
-        {
-            public int Total { get; set; }
-            public string Relation { get; set; }
-            public int MaxScore { get; set; }
-        }
     }
 }

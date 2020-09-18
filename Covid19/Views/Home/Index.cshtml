@@ -6,24 +6,21 @@
     @Scripts.Render("~/bundles/datatables")
     @Styles.Render("~/Content/datatables/css/datatables")
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-        $(function () {
-            tabela();
-        });
-
-    function tabela() {
-
+    $(document).ready(function () {
         $.ajax({
             url: '@Url.Content("~")Home/SearchAPI',
-            dataType: 'json',
-            cache: false,
-            success: function (result) {
-                alert(result.Search.Took);
-                alert(result.Hits);
-            }
+            success: function (data) {
+                $("#Took").val(data.Took);
+                $("#MaxScore").val(data.MaxScore);
+                $("#Relation").val(data.Relation);
+                $("#Total").val(data.Total);
+            },
+            dataType: "json"
         });
-</script>
+    });
+    </script>
 }
 <div class="jumbotron">
     <h1>Covid-19</h1>
@@ -53,18 +50,25 @@
         </div>*@
 </div>
 
-<div class="tab-content">
-    @*<div role="tabpanel" class="tab-pane active" id="estoquePrincipal" style="border:1px solid #ddd;border-top:none;">*@
-    <table class="table table-bordered table-condensed table-striped" id="tbl-covid">
-        <thead>
-            <tr>
-                @*<th>TimeOut</th>*@
-                <th>Took</th>
-                @*<th>Total</th>
-                    <th>Relation</th>
-                    <th>MaxScore</th>*@
-            </tr>
-        </thead>
-    </table>
-    @*</div>*@
+<div class="row">
+    <div class="col-md-2">
+        <label>Took</label>
+        <input id="Took" name="Took">
+    </div>
+    <div class="col-md-2">
+        <label>TimeOut</label>
+        <input id="TimeOut" name="TimeOut">
+    </div>
+    <div class="col-md-2">
+        <label>MaxScore</label>
+        <input id="MaxScore" name="MaxScore">
+    </div>
+    <div class="col-md-2">
+        <label>Relation</label>
+        <input id="Relation" name="Relation">
+    </div>
+    <div class="col-md-2">
+        <label>Total</label>
+        <input id="Total" name="Total">
+    </div>
 </div>
