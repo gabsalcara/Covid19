@@ -1,74 +1,90 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model Covid19.Models.API.CovidModel.Root
+@{
+        ViewBag.Title = "Home Page";
 }
 
 @section Scripts {
     @Scripts.Render("~/bundles/datatables")
     @Styles.Render("~/Content/datatables/css/datatables")
-
-    <script type="text/javascript">
-
-    $(document).ready(function () {
-        $.ajax({
-            url: '@Url.Content("~")Home/SearchAPI',
-            success: function (data) {
-                $("#Took").val(data.Took);
-                $("#MaxScore").val(data.MaxScore);
-                $("#Relation").val(data.Relation);
-                $("#Total").val(data.Total);
-            },
-            dataType: "json"
-        });
-    });
-    </script>
 }
 <div class="jumbotron">
     <h1>Covid-19</h1>
-    @*<p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>*@
-    @*<p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>*@
 </div>
 
 <div class="row">
-    @*<div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    <div class="col-md-3">
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon"><b>TimeOut</b></span>
+            @Html.TextBoxFor(m => m.timed_out, new { @class = "form-control", @readonly = "readonly" })
         </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-3">
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon"><b>Took</b></span>
+            @Html.TextBoxFor(m => m.took, new { @class = "form-control", @readonly = "readonly" })
         </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </div>*@
+    </div>
+    <div class="col-md-3">
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon"><b>TimeOut</b></span>
+            @Html.TextBoxFor(m => m._shards, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
 </div>
 
 <div class="row">
-    <div class="col-md-2">
-        <label>Took</label>
-        <input id="Took" name="Took">
-    </div>
-    <div class="col-md-2">
-        <label>TimeOut</label>
-        <input id="TimeOut" name="TimeOut">
-    </div>
-    <div class="col-md-2">
-        <label>MaxScore</label>
-        <input id="MaxScore" name="MaxScore">
-    </div>
-    <div class="col-md-2">
-        <label>Relation</label>
-        <input id="Relation" name="Relation">
-    </div>
-    <div class="col-md-2">
-        <label>Total</label>
-        <input id="Total" name="Total">
-    </div>
+    <table id="tbl-covid" class="table table-bordered table-condensed table-striped without-break-line" style="width:100%;">
+        <thead>
+            <tr>
+                <th>Estado</th>
+                <th>Estado Sigla</th>
+                <th>Municipio</th>
+                <th>Cnes</th>
+                <th>Data Notificacao Ocupacao</th>
+                <th>Ocup Hosp Cli</th>
+                <th>Ocup Hosp Uti</th>
+                <th>Ocup SRAG Cli</th>
+                <th>Ocup SRAG Uti</th>
+                <th>Altas</th>
+                <th>Obitos</th>
+                <th>Ocupação Informada</th>
+                <th>Alguma Ocupação Informada</th>
+                <th>Nome Cnes</th>
+                <th>Oferta Respiradores</th>
+                <th>Oferta Hosp Cli</th>
+                <th>Oferta Hosp Uti</th>
+                <th>Oferta SRAG Cli</th>
+                <th>Oferta SRAG Uti</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model.hits.hits)
+        {
+            <tbody>
+                <tr>
+                    <th>@item._source.estado</th>
+                    <th>@item._source.estadoSigla</th>
+                    <th>@item._source.municipio</th>
+                    <th>@item._source.cnes</th>
+                    <th>@item._source.dataNotificacaoOcupacao</th>
+                    <th>@item._source.ocupHospCli</th>
+                    <th>@item._source.ocupHospUti</th>
+                    <th>@item._source.ocupSRAGCli</th>
+                    <th>@item._source.ocupSRAGUti</th>
+                    <th>@item._source.altas</th>
+                    <th>@item._source.obitos</th>
+                    <th>@item._source.ocupacaoInformada</th>
+                    <th>@item._source.algumaOcupacaoInformada</th>
+                    <th>@item._source.nomeCnes</th>
+                    <th>@item._source.ofertaRespiradores</th>
+                    <th>@item._source.ofertaHospCli</th>
+                    <th>@item._source.ofertaHospUti</th>
+                    <th>@item._source.ofertaSRAGCli</th>
+                    <th>@item._source.ofertaSRAGUti</th>
+                </tr>
+            </tbody>
+        }
+        <tfoot>
+
+        </tfoot>
+    </table>
 </div>
